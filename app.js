@@ -12,7 +12,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({extended:false}));
 const {check, validationResult} = require('express-validator');
 
-mongoose.connect(process.env.MONGO_URI);
+if (process.env.MONGO_URI) {
+    mongoose.connect(process.env.MONGO_URI).catch((err) => {
+        console.log('❌ MongoDB connection error:', err.message);
+    });
+} else {
+    console.log('❌ MONGO_URI is not set. Add it in Vercel → Project → Settings → Environment Variables.');
+}
 
 mongoose.connection.on('connected', () => {
     console.log('✅ MongoDB connected');
@@ -60,7 +66,7 @@ app.post('/process',[
             throw new Error('Tickets must be a valid number.');
         }})
     ],
- (req, res) => {
+ async (req, res) => {
 
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -108,11 +114,12 @@ app.post('/process',[
             imPath: imName ? 'images/' + imName : ''
         });
 
-        newOrder.save().then((data)=>{
+        try {
+            await newOrder.save();
             console.log("Data Saved to MongoDB");
-        }).catch((err)=>{
+        } catch (err) {
             console.log("Error in saving to MongoDB:", err.message);
-        });
+        }
 
         var recpt = {
             'name': name,
@@ -137,6 +144,12 @@ app.get('/submissions', (req, res) => {
     });
 });
 
-app.listen(3001, () => {
-  console.log("My app is running on http://localhost:3001");
-});
+// Only bind to a port when running locally.
+// On Vercel, the app is imported and invoked per-request instead.
+if (require.main === module) {
+    app.listen(3001, () => {
+        console.log("My app is running on http://localhost:3001");
+    });
+}
+
+module.exports = app;
