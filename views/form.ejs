@@ -1,45 +1,44 @@
 <%-include('layouts/header') -%>
 <%-include('layouts/nav') -%>
 
-  
+
   <section class="w50">
-    <!--form name="myform" method="Post" onsubmit="return formSubmit();"  action="" -->
     <form name="myform" method="Post" action="/process" enctype="multipart/form-data">
       <label>Name</label>
-      <input id="name" placeholder="First Last" type="text" name="name"><br/>
+      <input id="name" placeholder="First Last" type="text" name="name"
+        value="<%= typeof formData !== 'undefined' ? formData.name : '' %>"><br/>
 
       <label>Email</label>
-      <input id="email" placeholder="email@domain.com" type="email" name="email"><br/>
+      <input id="email" placeholder="email@domain.com" type="email" name="email"
+        value="<%= typeof formData !== 'undefined' ? formData.email : '' %>"><br/>
 
       <label>Phone</label>
-      <input id="phone" placeholder="123-123-1234" type="phone" name="phone"><br/>
+      <input id="phone" placeholder="123-123-1234" type="phone" name="phone"
+        value="<%= typeof formData !== 'undefined' ? formData.phone : '' %>"><br/>
 
       <label>Post Code</label>
-      <input id="postcode" placeholder="X9X 9X9" type="postcode" name="postcode"><br/>
-      
+      <input id="postcode" placeholder="X9X 9X9" type="postcode" name="postcode"
+        value="<%= typeof formData !== 'undefined' ? formData.postcode : '' %>"><br/>
+
       <label>Will you have lunch?</label>
-      <input type="radio" value="yes" id="radio1" name="lunch">Yes
+      <input type="radio" value="yes" id="radio1" name="lunch"
+        <% if (typeof formData !== 'undefined' && formData.lunch === 'yes') { %>checked<% } %>>Yes
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <input type="radio" value="no" id="radio2" name="lunch">No
+      <input type="radio" value="no" id="radio2" name="lunch"
+        <% if (typeof formData !== 'undefined' && formData.lunch === 'no') { %>checked<% } %>>No
       <br/>
 
       <label>Number of Tickets</label>
-      <!--select name="tickets" id="tickets">
-          <option value="">----- Select -----</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-      </select><br/-->
+      <input id="tickets" placeholder="Number of Tickets" type="text" name="tickets"
+        value="<%= typeof formData !== 'undefined' ? formData.tickets : '' %>"><br/>
 
-      <input id="tickets" placeholder="Number of Tickets" type="text" name="tickets"><br/>
 
-      
       <label>Which Campus?</label>
       <select name="campus" id="campus">
           <option value="">----- Select -----</option>
-          <option value="Doon">Doon</option>
-          <option value="Waterloo">Waterloo</option>
-          <option value="Cambridge">Cambridge</option>
+          <option value="Doon" <% if (typeof formData !== 'undefined' && formData.campus === 'Doon') { %>selected<% } %>>Doon</option>
+          <option value="Waterloo" <% if (typeof formData !== 'undefined' && formData.campus === 'Waterloo') { %>selected<% } %>>Waterloo</option>
+          <option value="Cambridge" <% if (typeof formData !== 'undefined' && formData.campus === 'Cambridge') { %>selected<% } %>>Cambridge</option>
       </select>
 
       <label>Add Image: </label>
@@ -60,12 +59,12 @@
 
 
       </p>
-    </form>  
+    </form>
 </section>
 <section class="w50">
   <div class="formData">
     <p id="formResult">This is where the form data will show up.</p>
-    
+
     <%if(typeof receipt != 'undefined'){%>
       <p>Name: <%=receipt.name%></p>
       <p>Lunch: $ <%=receipt.lunchCost%></p>
@@ -73,7 +72,9 @@
       <p>Sub Total: $ <%=receipt.subTotal%></p>
       <p>Taxes: <%=receipt.taxes.toFixed(2)%></p>
       <p>Total: <%=receipt.total.toFixed(2)%></p>
-      <img src="<%=receipt.image%>" width=300px/>
+      <% if (receipt.image) { %>
+        <img src="<%=receipt.image%>" width=300px/>
+      <% } %>
     <%}%>
 
 
@@ -82,8 +83,3 @@
 <div class="clear"></div>
 
 <%-include('layouts/footer') -%>
-
-
-
-
-

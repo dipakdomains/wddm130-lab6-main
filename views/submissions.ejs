@@ -1,0 +1,46 @@
+<%- include('layouts/header') -%>
+<%- include('layouts/nav') -%>
+
+<main>
+  <h2>All Submissions</h2>
+  <% if (typeof orders !== 'undefined' && orders.length > 0) { %>
+
+    <table border="1" cellpadding="8" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Campus</th>
+          <th>Tickets</th>
+          <th>Lunch</th>
+          <th>Subtotal</th>
+          <th>Tax</th>
+          <th>Total</th>
+          <th>Date Submitted</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const order of orders) { %>
+          <tr>
+            <td><%= order.name %></td>
+            <td><%= order.email %></td>
+            <td><%= order.campus %></td>
+            <td><%= order.tickets %></td>
+            <td><%= order.lunch ? 'Yes' : 'No' %></td>
+            <td>$<%= order.subtotal != null ? order.subtotal.toFixed(2) : '0.00' %></td>
+            <td>$<%= order.tax != null ? order.tax.toFixed(2) : '0.00' %></td>
+            <td>$<%= order.total != null ? order.total.toFixed(2) : '0.00' %></td>
+            <td><%= order.createdAt ? order.createdAt.toLocaleString() : '' %></td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+
+  <% } else { %>
+
+    <p>No submissions found.</p>
+
+  <% } %>
+</main>
+
+<%- include('layouts/footer') -%>
