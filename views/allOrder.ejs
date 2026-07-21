@@ -1,0 +1,39 @@
+<%- include('layouts/header') -%>
+<%- include('layouts/nav') -%>
+
+<main>
+  <% if (typeof orders !== 'undefined') { %>
+
+    <% for (const order of orders) { %>
+
+      <div class="order">
+        <h3>Order ID: <%= order._id %></h3>
+
+        <p>Name: <%= order.name %></p>
+        <p>Email: <%= order.email %></p>
+        <p>Phone: <%= order.phone %></p>
+        <p>Post Code: <%= order.postcode %></p>
+        <p>Lunch: <%= order.lunch ? 'Yes' : 'No' %></p>
+        <p>Tickets: <%= order.tickets %></p>
+        <p>Campus: <%= order.campus %></p>
+
+        <% if (order.image) { %>
+          <img
+            src="<%= order.image %>"
+            alt="Order image"
+            width="200"
+            height="200"
+          >
+        <% } %>
+      </div>
+
+    <% } %>
+
+  <% } else { %>
+
+    <p>No orders found.</p>
+
+  <% } %>
+</main>
+
+<%- include('layouts/footer') -%>

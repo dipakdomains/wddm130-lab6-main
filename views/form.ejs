@@ -4,7 +4,7 @@
   
   <section class="w50">
     <!--form name="myform" method="Post" onsubmit="return formSubmit();"  action="" -->
-    <form name="myform" method="Post" action="/process">
+    <form name="myform" method="Post" action="/process" enctype="multipart/form-data">
       <label>Name</label>
       <input id="name" placeholder="First Last" type="text" name="name"><br/>
 
@@ -24,13 +24,16 @@
       <br/>
 
       <label>Number of Tickets</label>
-      <select name="tickets" id="tickets">
+      <!--select name="tickets" id="tickets">
           <option value="">----- Select -----</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
-      </select><br/>
+      </select><br/-->
 
+      <input id="tickets" placeholder="Number of Tickets" type="text" name="tickets"><br/>
+
+      
       <label>Which Campus?</label>
       <select name="campus" id="campus">
           <option value="">----- Select -----</option>
@@ -38,6 +41,10 @@
           <option value="Waterloo">Waterloo</option>
           <option value="Cambridge">Cambridge</option>
       </select>
+
+      <label>Add Image: </label>
+      <input type="file" name="myImage" id="myImage" accept="image/*"/>
+
 
       <br/><br/>
 
@@ -58,6 +65,18 @@
 <section class="w50">
   <div class="formData">
     <p id="formResult">This is where the form data will show up.</p>
+    
+    <%if(typeof receipt != 'undefined'){%>
+      <p>Name: <%=receipt.name%></p>
+      <p>Lunch: $ <%=receipt.lunchCost%></p>
+      <p>Ticket: $ <%=receipt.ticketCost%></p>
+      <p>Sub Total: $ <%=receipt.subTotal%></p>
+      <p>Taxes: <%=receipt.taxes.toFixed(2)%></p>
+      <p>Total: <%=receipt.total.toFixed(2)%></p>
+      <img src="<%=receipt.image%>" width=300px/>
+    <%}%>
+
+
   </div>
 </section>
 <div class="clear"></div>
