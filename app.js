@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -11,7 +12,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({extended:false}));
 const {check, validationResult} = require('express-validator'); // ES6 standard for destructuring an object
 
-mongoose.connect("mongodb+srv://gayan:1q2w3e4r@cluster0.ewtfalj.mongodb.net/Lab-7")
+mongoose.connect(process.env.MONGO_URI)
 
 const Order = mongoose.model('Order', {
     name: String,
